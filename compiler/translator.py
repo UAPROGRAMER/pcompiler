@@ -48,32 +48,32 @@ class Translator:
       raise ValueError
     
     if node.name in self.scope.reservedVarLabels:
-      self.start += f"mov rax, [{node.name}]\n"
+      self.start += f"xor rax, rax\nmov rax, [{node.name}]\n"
     else: raise ValueError
   
   def translate_add(self, node:ASTAdd) -> None:
     self.translate_expr(node.a)
-    self.start += "mov rbx, rax\n"
+    self.start += "push rax\n"
     self.translate_expr(node.b)
-    self.start += "add rax, rbx\n"
+    self.start += "pop rbx\nadd rax, rbx\n"
 
   def translate_subtract(self, node:ASTSubtract) -> None:
     self.translate_expr(node.b)
-    self.start += "mov rbx, rax\n"
+    self.start += "push rax\n"
     self.translate_expr(node.a)
-    self.start += "sub rax, rbx\n"
+    self.start += "pop rbx\nsub rax, rbx\n"
 
   def translate_multiply(self, node:ASTMultiply) -> None:
     self.translate_expr(node.a)
-    self.start += "mov rbx, rax\n"
+    self.start += "push rax\n"
     self.translate_expr(node.b)
-    self.start += "mul rbx\n"
+    self.start += "pop rbx\nmul rbx\n"
 
   def translate_divide(self, node:ASTDivide) -> None:
     self.translate_expr(node.b)
-    self.start += "mov rbx, rax\n"
+    self.start += "push rax\n"
     self.translate_expr(node.a)
-    self.start += "div rbx\n"
+    self.start += "pop rbx\ndiv rbx\n"
 
   def translate_plussign(self, node:ASTPlussign) -> None:
     self.translate_expr(node.a)

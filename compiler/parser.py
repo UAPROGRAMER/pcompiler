@@ -5,7 +5,10 @@ from astt import *
 #VARTYPE_LONG:VARTYPE = "long", 8
 
 VARTYPEDICT:dict[str,int] = {
-  "long":8
+  "u64":8,
+  "u32":4,
+  "u16":2,
+  "u8":1
 }
 
 class Parser:
@@ -105,6 +108,7 @@ class Parser:
 
     varsize = VARTYPEDICT[self.token.value]
 
+    self.expect(TT_COMMA)
     self.expect(TT_ID)
 
     varname = self.token.value
@@ -118,6 +122,7 @@ class Parser:
 
     varname = self.token.value
 
+    self.expect(TT_COMMA)
     self.next()
 
     value = self.parse_expr()

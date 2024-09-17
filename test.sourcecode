@@ -1,3 +1,9 @@
-reserve long name;
-set name 1/1;
-exit name;
+reserve u64, name1;
+reserve u32, name2;
+reserve u16, name3;
+reserve u8, name4;
+set name1, 1;
+set name2, 2;
+set name3, 3;
+set name4, 4;
+exit name1+name2+name3+name4;

@@ -10,6 +10,7 @@ TT_PLUS = "plus"
 TT_MINUS = "minus"
 TT_MULTIPLY = "multiply"
 TT_DIVIDE = "divide"
+TT_COMMA = "coma"
 
 class Token:
   type:int
@@ -72,6 +73,8 @@ class Lexer:
           tokens.append(Token(TT_MULTIPLY))
         case "/":
           tokens.append(Token(TT_DIVIDE))
+        case ",":
+          tokens.append(Token(TT_COMMA))
       self.next()
     return tokens
   
