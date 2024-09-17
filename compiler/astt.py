@@ -4,6 +4,7 @@ ASTT_EXIT = "exit"
 ASTT_NUM = "num"
 ASTT_VARCALL = "varcall"
 ASTT_CONST = "const"
+ASTT_POINTER = "pointer"
 
 ASTT_ADD = "add"
 ASTT_SUBTRACT = "subtract"
@@ -66,6 +67,14 @@ class ASTConst(ASTNode):
   
   def __repr__(self) -> str:
     return f"({self.asttype}, {self.name}, {self.size}, {self.value})"
+
+class ASTPointer(ASTNode):
+  asttype:str = ASTT_POINTER
+  def __init__(self, name:str) -> None:
+    self.name = name
+  
+  def __repr__(self) -> str:
+    return f'({self.asttype}, {self.name})'
 
 ###
 

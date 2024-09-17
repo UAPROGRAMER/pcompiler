@@ -11,6 +11,7 @@ TT_MINUS = "minus"
 TT_MULTIPLY = "multiply"
 TT_DIVIDE = "divide"
 TT_COMMA = "coma"
+TT_POINTER = "pointer"
 
 class Token:
   type:int
@@ -75,6 +76,10 @@ class Lexer:
           tokens.append(Token(TT_DIVIDE))
         case ",":
           tokens.append(Token(TT_COMMA))
+        case "'":
+          tokens.append(self.character())
+        case "&":
+          tokens.append(Token(TT_POINTER))
       self.next()
     return tokens
   
@@ -84,7 +89,7 @@ class Lexer:
 
   def id(self) -> Token:
     value:str = ""
-    while self.char.isalnum():
+    while self.char.isalnum() or self.char == "_":
       value += self.char
       self.next()
     return Token(TT_ID, value)
@@ -94,4 +99,14 @@ class Lexer:
     while self.char.isnumeric():
       value += self.char
       self.next()
+    return Token(TT_INT, value)
+  
+  def character(self) -> Token:
+    self.next()
+    value:str = str(ord(self.char))
+    self.next()
+
+    if self.char != "'":
+      raise ValueError
+
     return Token(TT_INT, value)

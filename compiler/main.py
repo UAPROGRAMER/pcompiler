@@ -37,11 +37,11 @@ def main(argc:int, argv:list[str]) -> int:
 
   lexer:Lexer = Lexer(text)
   tokens:list[Token] = lexer.tokenize()
-  #print(tokens)
+  print(tokens)
 
   parser:Parser = Parser(tokens)
   nodes:list[ASTNode] = parser.parse()
-  #print(nodes)
+  print(nodes)
 
   translator:Translator = Translator(nodes)
   code:str = translator.translate()

@@ -51,6 +51,9 @@ class Parser:
 
   def parse_varcall(self) -> ASTVarcall:
     return ASTVarcall(self.token.value)
+  
+  def parse_pointer(self) -> ASTPointer:
+    return ASTPointer(self.token.value)
 
   def parse_expr(self) -> ASTAdd|ASTSubtract:
     result = self.parse_term()
@@ -103,6 +106,9 @@ class Parser:
     elif self.token.type == TT_MINUS:
       self.next()
       return ASTMinussign(self.parse_factor())
+    elif self.token.type == TT_POINTER:
+      self.next()
+      return self.parse_pointer()
     else: raise ValueError
 
   def parse_reserve(self) -> ASTReserve:

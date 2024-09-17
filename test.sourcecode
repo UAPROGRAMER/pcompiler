@@ -1,9 +1,5 @@
-const u8, con1, 10;
-
-res u8, var1;
-set var1, 5;
-
 res u8, result;
-set result, ((con1+5)*2)/3;
+
+
 
 exit result;

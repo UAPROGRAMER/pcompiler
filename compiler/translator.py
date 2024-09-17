@@ -60,6 +60,14 @@ class Translator:
       self.start += f"xor rax, rax\nmov {SIZEATRIBUTES[self.scope.consts[node.name]][0]}, {SIZEATRIBUTES[self.scope.consts[node.name]][2]} [{node.name}]\n"
     else: raise ValueError
   
+  def translate_pointer(self, node:ASTPointer) -> None:
+    if not node.name in self.scope.labels:
+      raise ValueError
+    
+    if node.name in self.scope.reservedVarLabels or node.name in self.scope.constLabels:
+      self.start += f"mov rax, {node.name}\n"
+    else: raise ValueError
+  
   def translate_add(self, node:ASTAdd) -> None:
     self.translate_expr(node.a)
     self.start += "push rax\n"
@@ -108,6 +116,8 @@ class Translator:
       self.translate_num(node)
     elif node.asttype == ASTT_VARCALL:
       self.translate_varcall(node)
+    elif node.asttype == ASTT_POINTER:
+      self.translate_pointer(node)
     else: raise ValueError
 
   def translate_reserve(self, node:ASTReserve) -> None:
