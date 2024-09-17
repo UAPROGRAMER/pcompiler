@@ -3,6 +3,7 @@ ASTT_SET = "set"
 ASTT_EXIT = "exit"
 ASTT_NUM = "num"
 ASTT_VARCALL = "varcall"
+ASTT_CONST = "const"
 
 ASTT_ADD = "add"
 ASTT_SUBTRACT = "subtract"
@@ -55,6 +56,16 @@ class ASTExit(ASTNode):
   
   def __repr__(self) -> str:
     return f"({self.asttype}, {self.value})"
+
+class ASTConst(ASTNode):
+  asttype:str = ASTT_CONST
+  def __init__(self, name:str, size:int, value:str) -> None:
+    self.name = name
+    self.size = size
+    self.value = value
+  
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.name}, {self.size}, {self.value})"
 
 ###
 

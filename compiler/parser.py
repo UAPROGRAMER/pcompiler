@@ -33,12 +33,14 @@ class Parser:
       if self.token is None:
         continue
 
-      if self.token.value == "reserve":
+      if self.token.value in ["reserve", "res"]:
         self.nodes.append(self.parse_reserve())
       elif self.token.value == "set":
         self.nodes.append(self.parse_set())
       elif self.token.value == "exit":
         self.nodes.append(self.parse_exit())
+      elif self.token.value == "const":
+        self.nodes.append(self.parse_const())
       else: raise ValueError
 
       self.next()
@@ -135,3 +137,22 @@ class Parser:
     value = self.parse_expr()
 
     return ASTExit(value)
+
+  def parse_const(self) -> ASTConst:
+    self.expect(TT_ID)
+
+    varsize = VARTYPEDICT[self.token.value]
+
+    self.expect(TT_COMMA)
+    self.expect(TT_ID)
+
+    varname = self.token.value
+
+    self.expect(TT_COMMA)
+    self.expect(TT_INT)
+
+    value = self.token.value
+
+    self.expect(TT_SEMI)
+
+    return ASTConst(varname, varsize, value)

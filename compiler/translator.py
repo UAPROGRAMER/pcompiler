@@ -2,16 +2,21 @@ from lexer import *
 from parser import *
 
 SIZEATRIBUTES:dict[int,tuple[str, str]] = {
-  1:("al", "bl"),
-  2:("ax", "bx"),
-  4:("eax", "ebx"),
-  8:("rax", "rbx")
+  1:("al", "db", "byte"),
+  2:("ax", "dw", "word"),
+  4:("eax", "dd", "dword"),
+  8:("rax", "dq", "qword")
 }
 
 class Scope:
   labels:list[str] = ["_start"]
   reservedVarLabels:list[str] = []
   reservedVars:dict[str,int] = {}
+  constLabels:list[str] = []
+  consts:dict[str,int] = {}
+
+  def __repr__(self) -> str:
+    return f"{self.labels}, {self.reservedVarLabels}, {self.reservedVars}, {self.constLabels}, {self.consts}"
 
 ###
 
@@ -38,6 +43,8 @@ class Translator:
         self.translate_set(node)
       elif node.asttype == ASTT_EXIT:
         self.translate_exit(node)
+      elif node.asttype == ASTT_CONST:
+        self.translate_const(node)
     return self.compile()
 
   def translate_num(self, node:ASTNum) -> None:
@@ -48,7 +55,9 @@ class Translator:
       raise ValueError
     
     if node.name in self.scope.reservedVarLabels:
-      self.start += f"xor rax, rax\nmov rax, [{node.name}]\n"
+      self.start += f"xor rax, rax\nmov {SIZEATRIBUTES[self.scope.reservedVars[node.name]][0]}, {SIZEATRIBUTES[self.scope.reservedVars[node.name]][2]} [{node.name}]\n"
+    elif node.name in self.scope.constLabels:
+      self.start += f"xor rax, rax\nmov {SIZEATRIBUTES[self.scope.consts[node.name]][0]}, {SIZEATRIBUTES[self.scope.consts[node.name]][2]} [{node.name}]\n"
     else: raise ValueError
   
   def translate_add(self, node:ASTAdd) -> None:
@@ -118,9 +127,19 @@ class Translator:
     self.translate_expr(node.value)
     
     if node.name in self.scope.reservedVarLabels:
-      self.start += f"mov [{node.name}], {SIZEATRIBUTES[self.scope.reservedVars[node.name]][0]}\n"
+      self.start += f"mov {SIZEATRIBUTES[self.scope.reservedVars[node.name]][2]} [{node.name}], {SIZEATRIBUTES[self.scope.reservedVars[node.name]][0]}\n"
 
   def translate_exit(self, node:ASTExit) -> None:
     self.translate_expr(node.value)
 
     self.start += f"mov rdi, rax\nmov rax, 60\nsyscall\n"
+  
+  def translate_const(self, node:ASTConst) -> None:
+    if node.name in self.scope.labels:
+      raise ValueError
+    
+    self.scope.labels.append(node.name)
+    self.scope.constLabels.append(node.name)
+    self.scope.consts[node.name] = node.size
+
+    self.sectionData += f"{node.name}: {SIZEATRIBUTES[node.size][1]} {node.value}\n"
