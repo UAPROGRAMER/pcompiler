@@ -22,3 +22,4 @@
 - -a : minus sign
 - +a : plus sign
 - !a : not
+- &[name] : pointer
