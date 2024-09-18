@@ -32,21 +32,15 @@ def main(argc:int, argv:list[str]) -> int:
 
   with open(inputfile, "r") as file:
     text:str = file.read()
-  
-  #text:str = "reserve long, name;\nset name, (-((10-5-3+8)*10))/10;\nexit name;"
 
   lexer:Lexer = Lexer(text)
   tokens:list[Token] = lexer.tokenize()
-  print(tokens)
 
   parser:Parser = Parser(tokens)
   nodes:list[ASTNode] = parser.parse()
-  print(nodes)
 
   translator:Translator = Translator(nodes)
   code:str = translator.translate()
-
-  #print(code)
 
   with open(outputfile, "w") as file:
     file.write(code)

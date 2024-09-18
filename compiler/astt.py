@@ -16,6 +16,7 @@ ASTT_AND = "and"
 ASTT_OR = "or"
 ASTT_NOT = "not"
 ASTT_XOR = "xor"
+ASTT_MODULUS = "modulus"
 
 class ASTNode:
   asttype:str
@@ -141,7 +142,7 @@ class ASTAnd(ASTNode):
     self.b = b
   
   def __repr__(self) -> str:
-    return F"({self.asttype}, {self.a}, {self.b})"
+    return f"({self.asttype}, {self.a}, {self.b})"
   
 class ASTOr(ASTNode):
   asttype:str = ASTT_OR
@@ -150,7 +151,7 @@ class ASTOr(ASTNode):
     self.b = b
   
   def __repr__(self) -> str:
-    return F"({self.asttype}, {self.a}, {self.b})"
+    return f"({self.asttype}, {self.a}, {self.b})"
 
 class ASTNot(ASTNode):
   asttype:str = ASTT_NOT
@@ -158,7 +159,7 @@ class ASTNot(ASTNode):
     self.a = a
   
   def __repr__(self) -> str:
-    return F"({self.asttype}, {self.a})"
+    return f"({self.asttype}, {self.a})"
 
 class ASTXor(ASTNode):
   asttype:str = ASTT_XOR
@@ -167,4 +168,13 @@ class ASTXor(ASTNode):
     self.b = b
   
   def __repr__(self) -> str:
-    return F"({self.asttype}, {self.a}, {self.b})"
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTModulus(ASTNode):
+  asttype:str = ASTT_MODULUS
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+  
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"

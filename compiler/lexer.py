@@ -15,6 +15,7 @@ TT_ANP = "anp"
 TT_OR = "or"
 TT_NOT = "not"
 TT_XOR = "xor"
+TT_MODULUS = "modulus"
 
 class Token:
   type:int
@@ -89,6 +90,8 @@ class Lexer:
           tokens.append(Token(TT_NOT))
         case "^":
           tokens.append(Token(TT_XOR))
+        case "%":
+          tokens.append(Token(TT_MODULUS))
       self.next()
     return tokens
   
