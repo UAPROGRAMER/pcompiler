@@ -1,8 +1,8 @@
-const u8, true, 255;
+const u8, true, 1;
 const u8, false, 0;
 
 res u8, a;
 
-set a, 9%(+(-1+2-3+4)*2/2);
+set a, 13%7;
 
 exit a;

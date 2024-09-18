@@ -2,7 +2,7 @@
 Compile source code into x86_64 linux assembley and assemble with NASM assembler. Made for linux.
 
 # keywords
-- res/reserve [size], [name];
+- res [size], [name];
 - const [size], [name], [const value];
 - set [name], [expr];
 - exit [expr];
@@ -15,9 +15,11 @@ Compile source code into x86_64 linux assembley and assemble with NASM assembler
 ## low priority
 - a + b : add
 - a - b : subtract
-## normal priority
+## normal-low priority
 - a * b : multiply
 - a / b : divide
+- a % b : modulus
+## normal-high priority
 - a & b : and
 - a | b : or
 - a ^ b : xor
