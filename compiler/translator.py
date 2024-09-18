@@ -68,28 +68,25 @@ class Translator:
       self.start += f"mov rax, {node.name}\n"
     else: raise ValueError
   
-  def translate_add(self, node:ASTAdd) -> None:
-    self.translate_expr(node.a)
-    self.start += "push rax\n"
+  def translate_load_op_arg(self, node:ASTNode) -> None:
     self.translate_expr(node.b)
+    self.start += "push rax\n"
+    self.translate_expr(node.a)
+  
+  def translate_add(self, node:ASTAdd) -> None:
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\nadd rax, rbx\n"
 
   def translate_subtract(self, node:ASTSubtract) -> None:
-    self.translate_expr(node.b)
-    self.start += "push rax\n"
-    self.translate_expr(node.a)
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\nsub rax, rbx\n"
 
   def translate_multiply(self, node:ASTMultiply) -> None:
-    self.translate_expr(node.a)
-    self.start += "push rax\n"
-    self.translate_expr(node.b)
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\nmul rbx\n"
 
   def translate_divide(self, node:ASTDivide) -> None:
-    self.translate_expr(node.b)
-    self.start += "push rax\n"
-    self.translate_expr(node.a)
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\ndiv rbx\n"
 
   def translate_plussign(self, node:ASTPlussign) -> None:
@@ -100,21 +97,15 @@ class Translator:
     self.start += "neg eax\n"
   
   def translate_and(self, node:ASTAnd) -> None:
-    self.translate_expr(node.a)
-    self.start += "push rax\n"
-    self.translate_expr(node.b)
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\nand rax, rbx\n"
   
   def translate_or(self, node:ASTAnd) -> None:
-    self.translate_expr(node.a)
-    self.start += "push rax\n"
-    self.translate_expr(node.b)
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\nor rax, rbx\n"
   
   def translate_xor(self, node:ASTAnd) -> None:
-    self.translate_expr(node.a)
-    self.start += "push rax\n"
-    self.translate_expr(node.b)
+    self.translate_load_op_arg(node)
     self.start += "pop rbx\nxor rax, rbx\n"
 
   def translate_not(self, node:ASTNot) -> None:

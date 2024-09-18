@@ -2,11 +2,7 @@ const u8, true, 255;
 const u8, false, 0;
 
 res u8, a;
-res u8, b;
-res u8, c;
 
-set a, false;
-set b, true;
-set c, true;
+set a, !(10-5*2)/1&true;
 
-exit a&b&c;
+exit a;
