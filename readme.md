@@ -1,3 +1,6 @@
+# Pcompiler
+Compile source code into x86_64 linux assembley and assemble with NASM assembler. Made for linux.
+
 # keywords
 - res/reserve [size], [name];
 - const [size], [name], [const value];
