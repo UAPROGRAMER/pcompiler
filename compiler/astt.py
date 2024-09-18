@@ -12,6 +12,10 @@ ASTT_MULTIPLY = "multiply"
 ASTT_DIVIDE = "divide"
 ASTT_PLUSSIGN = "plussign"
 ASTT_MINUSSIGN = "minussigns"
+ASTT_AND = "and"
+ASTT_OR = "or"
+ASTT_NOT = "not"
+ASTT_XOR = "xor"
 
 class ASTNode:
   asttype:str
@@ -129,3 +133,38 @@ class ASTMinussign(ASTNode):
 
   def __repr__(self) -> str:
     return f"({self.asttype}, {self.a})"
+
+class ASTAnd(ASTNode):
+  asttype:str = ASTT_AND
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+  
+  def __repr__(self) -> str:
+    return F"({self.asttype}, {self.a}, {self.b})"
+  
+class ASTOr(ASTNode):
+  asttype:str = ASTT_OR
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+  
+  def __repr__(self) -> str:
+    return F"({self.asttype}, {self.a}, {self.b})"
+
+class ASTNot(ASTNode):
+  asttype:str = ASTT_NOT
+  def __init__(self, a) -> None:
+    self.a = a
+  
+  def __repr__(self) -> str:
+    return F"({self.asttype}, {self.a})"
+
+class ASTXor(ASTNode):
+  asttype:str = ASTT_XOR
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+  
+  def __repr__(self) -> str:
+    return F"({self.asttype}, {self.a}, {self.b})"

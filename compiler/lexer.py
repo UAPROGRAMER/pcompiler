@@ -11,7 +11,10 @@ TT_MINUS = "minus"
 TT_MULTIPLY = "multiply"
 TT_DIVIDE = "divide"
 TT_COMMA = "coma"
-TT_POINTER = "pointer"
+TT_ANP = "anp"
+TT_OR = "or"
+TT_NOT = "not"
+TT_XOR = "xor"
 
 class Token:
   type:int
@@ -79,7 +82,13 @@ class Lexer:
         case "'":
           tokens.append(self.character())
         case "&":
-          tokens.append(Token(TT_POINTER))
+          tokens.append(Token(TT_ANP))
+        case "|":
+          tokens.append(Token(TT_OR))
+        case "!":
+          tokens.append(Token(TT_NOT))
+        case "^":
+          tokens.append(Token(TT_XOR))
       self.next()
     return tokens
   

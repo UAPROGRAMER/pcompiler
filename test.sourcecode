@@ -1,5 +1,12 @@
-res u8, result;
+const u8, true, 255;
+const u8, false, 0;
 
+res u8, a;
+res u8, b;
+res u8, c;
 
+set a, false;
+set b, true;
+set c, true;
 
-exit result;
+exit a&b&c;

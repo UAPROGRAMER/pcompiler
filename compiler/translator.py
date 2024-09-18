@@ -98,6 +98,28 @@ class Translator:
   def translate_minussign(self, node:ASTMinussign) -> None:
     self.translate_expr(node.a)
     self.start += "neg eax\n"
+  
+  def translate_and(self, node:ASTAnd) -> None:
+    self.translate_expr(node.a)
+    self.start += "push rax\n"
+    self.translate_expr(node.b)
+    self.start += "pop rbx\nand rax, rbx\n"
+  
+  def translate_or(self, node:ASTAnd) -> None:
+    self.translate_expr(node.a)
+    self.start += "push rax\n"
+    self.translate_expr(node.b)
+    self.start += "pop rbx\nor rax, rbx\n"
+  
+  def translate_xor(self, node:ASTAnd) -> None:
+    self.translate_expr(node.a)
+    self.start += "push rax\n"
+    self.translate_expr(node.b)
+    self.start += "pop rbx\nxor rax, rbx\n"
+
+  def translate_not(self, node:ASTNot) -> None:
+    self.translate_expr(node.a)
+    self.start += "not rax\n"
 
   def translate_expr(self, node:ASTNode) -> None:
     if node.asttype == ASTT_ADD:
@@ -118,6 +140,14 @@ class Translator:
       self.translate_varcall(node)
     elif node.asttype == ASTT_POINTER:
       self.translate_pointer(node)
+    elif node.asttype == ASTT_NOT:
+      self.translate_not(node)
+    elif node.asttype == ASTT_AND:
+      self.translate_and(node)
+    elif node.asttype == ASTT_OR:
+      self.translate_or(node)
+    elif node.asttype == ASTT_XOR:
+      self.translate_xor(node)
     else: raise ValueError
 
   def translate_reserve(self, node:ASTReserve) -> None:

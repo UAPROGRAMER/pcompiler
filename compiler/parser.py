@@ -73,7 +73,7 @@ class Parser:
     result = self.parse_factor()
     self.next()
     
-    while (not self.token is None) and (self.token.type in (TT_MULTIPLY, TT_DIVIDE)):
+    while (not self.token is None) and (self.token.type in (TT_MULTIPLY, TT_DIVIDE, TT_ANP, TT_OR, TT_XOR)):
       if self.token.type == TT_MULTIPLY:
         self.next()
         result = ASTMultiply(result, self.parse_factor())
@@ -81,6 +81,18 @@ class Parser:
       elif self.token.type == TT_DIVIDE:
         self.next()
         result = ASTDivide(result, self.parse_factor())
+        self.next()
+      elif self.token.type == TT_ANP:
+        self.next()
+        result = ASTAnd(result, self.parse_factor())
+        self.next()
+      elif self.token.type == TT_OR:
+        self.next()
+        result = ASTOr(result, self.parse_factor())
+        self.next()
+      elif self.token.type == TT_XOR:
+        self.next()
+        result = ASTXor(result, self.parse_factor())
         self.next()
       else: raise ValueError
     
@@ -106,9 +118,12 @@ class Parser:
     elif self.token.type == TT_MINUS:
       self.next()
       return ASTMinussign(self.parse_factor())
-    elif self.token.type == TT_POINTER:
+    elif self.token.type == TT_ANP:
       self.next()
       return self.parse_pointer()
+    elif self.token.type == TT_NOT:
+      self.next()
+      return ASTNot(self.parse_factor())
     else: raise ValueError
 
   def parse_reserve(self) -> ASTReserve:
