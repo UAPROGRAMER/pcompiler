@@ -17,6 +17,12 @@ ASTT_OR = "or"
 ASTT_NOT = "not"
 ASTT_XOR = "xor"
 ASTT_MODULUS = "modulus"
+ASTT_EQUAL = "equal"
+ASTT_GREATER = "greater"
+ASTT_LOWER = "lower"
+ASTT_GREATER_EQUAL = "greater_equal"
+ASTT_LOWER_EQUAL = "lower_equal"
+ASTT_NOT_EQUAL = "not_equal"
 
 class ASTNode:
   asttype:str
@@ -176,5 +182,59 @@ class ASTModulus(ASTNode):
     self.a = a
     self.b = b
   
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTEqual(ASTNode):
+  asttype:str = ASTT_EQUAL
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTGreater(ASTNode):
+  asttype:str = ASTT_GREATER
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTLower(ASTNode):
+  asttype:str = ASTT_LOWER
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTGreaterequal(ASTNode):
+  asttype:str = ASTT_GREATER_EQUAL
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTLowerequal(ASTNode):
+  asttype:str = ASTT_LOWER_EQUAL
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.a}, {self.b})"
+
+class ASTNotequal(ASTNode):
+  asttype:str = ASTT_NOT_EQUAL
+  def __init__(self, a, b) -> None:
+    self.a = a
+    self.b = b
+
   def __repr__(self) -> str:
     return f"({self.asttype}, {self.a}, {self.b})"

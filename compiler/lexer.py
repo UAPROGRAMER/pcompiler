@@ -16,6 +16,9 @@ TT_OR = "or"
 TT_NOT = "not"
 TT_XOR = "xor"
 TT_MODULUS = "modulus"
+TT_GREATER = "bigger"
+TT_LOWER = "lower"
+TT_EQUAL = "equal"
 
 class Token:
   type:int
@@ -92,6 +95,12 @@ class Lexer:
           tokens.append(Token(TT_XOR))
         case "%":
           tokens.append(Token(TT_MODULUS))
+        case ">":
+          tokens.append(Token(TT_GREATER))
+        case "<":
+          tokens.append(Token(TT_LOWER))
+        case "=":
+          tokens.append(Token(TT_EQUAL))
       self.next()
     return tokens
   

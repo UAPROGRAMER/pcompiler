@@ -3,6 +3,6 @@ const u8, false, 0;
 
 res u8, a;
 
-set a, 13%7;
+set a, 100>=100;
 
 exit a;

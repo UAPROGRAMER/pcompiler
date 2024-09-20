@@ -76,7 +76,7 @@ class Parser:
   def parse_bitwise(self) -> ASTAnd|ASTOr|ASTXor:
     result = self.parse_factor()
 
-    while (not (self.token is None)) and (self.token.type in (TT_ANP, TT_OR, TT_XOR)):
+    while (not (self.token is None)) and (self.token.type in (TT_ANP, TT_OR, TT_XOR, TT_GREATER, TT_LOWER, TT_EQUAL, TT_NOT)):
       if self.token.type == TT_ANP:
         self.next()
         result = ASTAnd(result, self.parse_factor())
@@ -86,6 +86,34 @@ class Parser:
       elif self.token.type == TT_XOR:
         self.next()
         result = ASTXor(result, self.parse_factor())
+      elif self.token.type == TT_EQUAL:
+        self.next()
+        if self.token.type == TT_EQUAL:
+          self.next()
+          result = ASTEqual(result, self.parse_factor())
+        else:
+          raise ValueError
+      elif self.token.type == TT_GREATER:
+        self.next()
+        if self.token.type == TT_EQUAL:
+          self.next()
+          result = ASTGreaterequal(result, self.parse_factor())
+        else:
+          result = ASTGreater(result, self.parse_factor())
+      elif self.token.type == TT_LOWER:
+        self.next()
+        if self.token.type == TT_EQUAL:
+          self.next()
+          result = ASTLowerequal(result, self.parse_factor())
+        else:
+          result = ASTLower(result, self.parse_factor())
+      elif self.token.type == TT_NOT:
+        self.next()
+        if self.token.type == TT_EQUAL:
+          self.next()
+          result = ASTNotequal(result, self.parse_factor())
+        else:
+          raise ValueError
       else:
         raise ValueError
     

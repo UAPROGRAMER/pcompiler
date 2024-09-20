@@ -32,6 +32,8 @@ class Translator:
     self.start = "_start:\n"
     self.end = "mov rax, 60\nmov rdi, 0\nsyscall\n"
 
+    self.cmptime = 0
+
     self.scope:Scope = Scope()
 
   def compile(self) -> str:
@@ -121,6 +123,36 @@ class Translator:
     self.load_operands(node)
     self.start += "xor rax, rbx\n"
 
+  def translate_equal(self, node:ASTEqual) -> None:
+    self.load_operands(node)
+    self.start += f"cmp rax, rbx\nje cmptrue{self.cmptime}\nxor rax, rax\njmp cmpend{self.cmptime}\ncmptrue{self.cmptime}:\nmov rax, 1\ncmpend{self.cmptime}:\n"
+    self.cmptime += 1
+  
+  def translate_not_equal(self, node:ASTEqual) -> None:
+    self.load_operands(node)
+    self.start += f"cmp rax, rbx\njne cmptrue{self.cmptime}\nxor rax, rax\njmp cmpend{self.cmptime}\ncmptrue{self.cmptime}:\nmov rax, 1\ncmpend{self.cmptime}:\n"
+    self.cmptime += 1
+  
+  def translate_greater(self, node:ASTEqual) -> None:
+    self.load_operands(node)
+    self.start += f"cmp rax, rbx\njg cmptrue{self.cmptime}\nxor rax, rax\njmp cmpend{self.cmptime}\ncmptrue{self.cmptime}:\nmov rax, 1\ncmpend{self.cmptime}:\n"
+    self.cmptime += 1
+  
+  def translate_lower(self, node:ASTEqual) -> None:
+    self.load_operands(node)
+    self.start += f"cmp rax, rbx\njl cmptrue{self.cmptime}\nxor rax, rax\njmp cmpend{self.cmptime}\ncmptrue{self.cmptime}:\nmov rax, 1\ncmpend{self.cmptime}:\n"
+    self.cmptime += 1
+  
+  def translate_greaterequal(self, node:ASTEqual) -> None:
+    self.load_operands(node)
+    self.start += f"cmp rax, rbx\njge cmptrue{self.cmptime}\nxor rax, rax\njmp cmpend{self.cmptime}\ncmptrue{self.cmptime}:\nmov rax, 1\ncmpend{self.cmptime}:\n"
+    self.cmptime += 1
+  
+  def translate_lowerequal(self, node:ASTEqual) -> None:
+    self.load_operands(node)
+    self.start += f"cmp rax, rbx\njle cmptrue{self.cmptime}\nxor rax, rax\njmp cmpend{self.cmptime}\ncmptrue{self.cmptime}:\nmov rax, 1\ncmpend{self.cmptime}:\n"
+    self.cmptime += 1
+
   def translate_expr(self, node:ASTExpr) -> None:
     type = node.asttype
     if type == ASTT_NUM:
@@ -151,6 +183,18 @@ class Translator:
       self.translate_not(node)
     elif type == ASTT_MODULUS:
       self.translate_modulus(node)
+    elif type == ASTT_EQUAL:
+      self.translate_equal(node)
+    elif type == ASTT_NOT_EQUAL:
+      self.translate_not_equal(node)
+    elif type == ASTT_GREATER:
+      self.translate_greater(node)
+    elif type == ASTT_LOWER:
+      self.translate_lower(node)
+    elif type == ASTT_GREATER_EQUAL:
+      self.translate_greaterequal(node)
+    elif type == ASTT_LOWER_EQUAL:
+      self.translate_lowerequal(node)
     else:
       raise ValueError
 
