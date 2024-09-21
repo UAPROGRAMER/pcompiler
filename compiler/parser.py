@@ -37,6 +37,10 @@ class Parser:
         self.nodes.append(self.parse_set())
       elif self.token.value == "exit":
         self.nodes.append(self.parse_exit())
+      elif self.token.value == "label":
+        self.nodes.append(self.parse_label())
+      elif self.token.value == "jump":
+        self.nodes.append(self.parse_jump())
       else:
         raise ValueError
     return self.nodes
@@ -207,3 +211,21 @@ class Parser:
     self.next()
     
     return ASTExit(value)
+
+  def parse_label(self) -> ASTLabel:
+    self.expect(TT_ID)
+    name = self.token.value
+    self.expect(TT_SEMI)
+    self.next()
+
+    return ASTLabel(name)
+  
+  def parse_jump(self) -> ASTJump:
+    self.next()
+    name = self.token.value
+    self.expect(TT_COMMA)
+    self.next()
+    value = self.parse_expr()
+    self.next()
+
+    return ASTJump(name, value)

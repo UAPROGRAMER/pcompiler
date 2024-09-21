@@ -1,8 +1,13 @@
 const u8, true, 1;
 const u8, false, 0;
 
-res u8, a;
+res u8, var;
+set var, 0;
 
-set a, 100>=100;
+label start;
 
-exit a;
+set var, var+1;
+
+jump start, 10>var;
+
+exit var;

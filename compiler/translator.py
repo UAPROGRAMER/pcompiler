@@ -11,7 +11,7 @@ SIZEATRIBUTES:dict[int,tuple[str, str]] = {
 }
 
 class Scope:
-  labels:list[str] = ["_start"]
+  labels:list[str] = ["_start", "res", "set", "const", "label", "jump", "exit"]
   reservedVarLabels:list[str] = []
   reservedVars:dict[str,int] = {}
   constLabels:list[str] = []
@@ -49,6 +49,10 @@ class Translator:
         self.translate_exit(node)
       elif node.asttype == ASTT_CONST:
         self.translate_const(node)
+      elif node.asttype == ASTT_LABEL:
+        self.translate_label(node)
+      elif node.asttype == ASTT_JUMP:
+        self.translate_jump(node)
     return self.compile()
   
   def translate_num(self, node:ASTNum) -> None:
@@ -233,3 +237,16 @@ class Translator:
     self.translate_expr(node.value)
 
     self.start += f"mov rdi, rax\nmov rax, 60\nsyscall\n"
+  
+  def translate_label(self, node:ASTLabel):
+    if f"label_{node.name}" in self.scope.labels:
+      raise ValueError
+
+    self.scope.labels.append(f"label_{node.name}")
+
+    self.start += f"label_{node.name}:\n"
+
+  def translate_jump(self, node:ASTJump):
+    self.translate_expr(node.value)
+
+    self.start += f"cmp rax, 1\nje label_{node.name}\n"

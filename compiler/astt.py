@@ -5,6 +5,8 @@ ASTT_NUM = "num"
 ASTT_VARCALL = "varcall"
 ASTT_CONST = "const"
 ASTT_POINTER = "pointer"
+ASTT_LABEL = "label"
+ASTT_JUMP = "jump"
 
 ASTT_ADD = "add"
 ASTT_SUBTRACT = "subtract"
@@ -85,7 +87,24 @@ class ASTPointer(ASTNode):
     self.name = name
   
   def __repr__(self) -> str:
-    return f'({self.asttype}, {self.name})'
+    return f"({self.asttype}, {self.name})"
+
+class ASTLabel(ASTNode):
+  asttype:str = ASTT_LABEL
+  def __init__(self, name:str) -> None:
+    self.name = name
+  
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.name})"
+
+class ASTJump(ASTNode):
+  asttype:str = ASTT_JUMP
+  def __init__(self, name:str, value) -> None:
+    self.name = name
+    self.value = value
+  
+  def __repr__(self) -> str:
+    return f"({self.asttype}, {self.name}, {self.value})"
 
 ###
 
